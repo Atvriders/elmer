@@ -1,4 +1,7 @@
-# Ham Radio Catalog & Connection Guide
+# Elmer — Ham Radio Catalog & Connection Guide
+
+> In ham radio, an **Elmer** is the mentor who patiently helps a newcomer get on the air.
+> This is that mentor as a dataset + tool.
 
 An exhaustive, source-audited dataset of **ham radios**, **digital-mode / CAT interfaces**, and the
 **software** that talks to a radio — plus the **exact connection settings** for every combination and a

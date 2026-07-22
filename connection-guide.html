@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Ham Radio Connection Guide</title>
+<title>Elmer — Ham Radio Connection Guide</title>
 </head>
 <body>
-<title>Ham Radio Connection Guide</title>
+<title>Elmer — Ham Radio Connection Guide</title>
 <style>
 :root{
   --ground:#0E1116; --surface:#161B22; --surface2:#1E2530; --border:#2A333F; --border2:#374252;
@@ -131,7 +131,7 @@ details.rules .body b{color:var(--text);font-weight:650}
 <div class="wrap">
   <header class="top">
     <div>
-      <div class="brand"><span class="dot"></span><h1>Ham Radio Connection Guide<span> — settings finder</span></h1></div>
+      <div class="brand"><span class="dot"></span><h1>Elmer<span> — ham radio connection guide</span></h1></div>
       <div class="sub">Pick a radio, choose your sound-card interface if it needs one, pick the program — get every setting, with sources.</div>
     </div>
     <button class="themebtn" id="theme">◐ Theme</button>
@@ -367,7 +367,7 @@ combo($('#sq'),$('#smenu'),SOFTWARE,s=>s.__label,pickSw);
 (function(){const b=$('#theme');function cur(){return document.documentElement.getAttribute('data-theme')|| (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');}
  b.addEventListener('click',()=>{const n=cur()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',n);});})();
 
-$('#foot').innerHTML = 'Covers <b>'+RADIOS.length+'</b> radios × <b>'+SOFTWARE.length+'</b> programs. '+
+$('#foot').innerHTML = '<b>Elmer</b> — ham slang for the mentor who helps you get on the air. Covers <b>'+RADIOS.length+'</b> radios × <b>'+SOFTWARE.length+'</b> programs. '+
   'Values are cross-referenced to manuals / Hamlib / RigPix / interface docs where shown; always confirm against your radio’s manual before wiring up. '+
   'COM-port numbers are assigned by your PC and cannot be pre-filled.';
 </script>
