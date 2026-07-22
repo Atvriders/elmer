@@ -1,0 +1,16 @@
+# Elmer — serves the interactive connection guide + data on http://localhost:3023
+# Uses the prebuilt image published to GHCR by GitHub Actions.
+#   docker compose pull && docker compose up -d
+services:
+  elmer:
+    image: ghcr.io/atvriders/elmer:latest
+    container_name: elmer
+    ports:
+      - "3023:80"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

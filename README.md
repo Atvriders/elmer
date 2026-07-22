@@ -29,6 +29,19 @@ Open it in a browser. **Search a radio → (if it has no built-in codec) pick yo
 → search a program → read every required setting**, with clickable sources and a confirmed/corrected/
 uncertain verdict on each. Works offline (fully self-contained), light & dark themes, copy-to-clipboard.
 
+## Run it (Docker)
+
+The interactive guide + all data are served as a static site. GitHub Actions builds a multi-arch
+image and publishes it to GHCR on every push to `master`.
+
+```bash
+docker compose pull && docker compose up -d
+# → http://localhost:3023
+```
+
+The bundled `docker-compose.yml` uses the prebuilt image `ghcr.io/atvriders/elmer:latest` and maps
+host port **3023** → container 80. To build locally instead: `docker build -t elmer . && docker run -p 3023:80 elmer`.
+
 ## How the data was built
 
 1. Manufacturer/category research fan-out enumerated the radios, interfaces, and software.

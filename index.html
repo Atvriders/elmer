@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Elmer — Ham Radio Connection Guide & Catalog</title>
+<style>
+:root{
+  --ground:#0E1116;--surface:#161B22;--surface2:#1E2530;--border:#2A333F;--border2:#374252;
+  --text:#E6EDF3;--muted:#8592A3;--faint:#5B6673;--accent:#34D3BE;--accent-ink:#0B3F39;--accent-soft:rgba(52,211,190,.12);
+  --mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+@media (prefers-color-scheme:light){:root{--ground:#EEF1F5;--surface:#FFFFFF;--surface2:#F4F6F9;--border:#DCE2EA;--border2:#C7D0DB;--text:#141A21;--muted:#5A6675;--faint:#8A96A5;--accent:#0E9E8C;--accent-ink:#E6FBF6;--accent-soft:rgba(14,158,140,.10);}}
+:root[data-theme="dark"]{--ground:#0E1116;--surface:#161B22;--surface2:#1E2530;--border:#2A333F;--text:#E6EDF3;--muted:#8592A3;--faint:#5B6673;--accent:#34D3BE;--accent-ink:#0B3F39;--accent-soft:rgba(52,211,190,.12);}
+:root[data-theme="light"]{--ground:#EEF1F5;--surface:#FFFFFF;--surface2:#F4F6F9;--border:#DCE2EA;--text:#141A21;--muted:#5A6675;--faint:#8A96A5;--accent:#0E9E8C;--accent-ink:#E6FBF6;--accent-soft:rgba(14,158,140,.10);}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--text);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:40px clamp(16px,4vw,32px) 64px}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft)}
+h1{font-size:30px;margin:0;letter-spacing:-.02em}
+h1 span{color:var(--muted);font-weight:450;font-size:19px}
+.tag{color:var(--muted);font-size:14px;max-width:60ch;margin:8px 0 2px}
+.tag b{color:var(--text);font-weight:600}
+.cta{display:flex;align-items:center;gap:16px;margin:26px 0 8px;padding:22px 24px;background:var(--surface);
+  border:1px solid var(--border);border-radius:16px;text-decoration:none;color:inherit;transition:border-color .15s,transform .15s}
+.cta:hover{border-color:var(--accent);transform:translateY(-1px)}
+.cta .ic{font-size:30px;line-height:1}
+.cta .t{flex:1}
+.cta .t b{font-size:17px;display:block}
+.cta .t small{color:var(--muted);font-size:13px}
+.cta .go{color:var(--accent);font-weight:700;font-size:14px;white-space:nowrap}
+h2{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:34px 0 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px}
+a.dl{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:12px 14px;background:var(--surface);
+  border:1px solid var(--border);border-radius:10px;text-decoration:none;color:inherit;transition:border-color .15s}
+a.dl:hover{border-color:var(--border2)}
+a.dl .n{font-weight:600;font-size:13.5px}
+a.dl .d{color:var(--muted);font-size:11.5px;display:block;margin-top:2px}
+a.dl .sz{color:var(--accent);font-family:var(--mono);font-size:11.5px;white-space:nowrap}
+.foot{margin-top:36px;padding-top:18px;border-top:1px solid var(--border);color:var(--faint);font-size:12.5px;line-height:1.7}
+.foot a{color:var(--accent);text-decoration:none}
+.stat{display:inline-flex;gap:5px;font-family:var(--mono);font-size:12px;color:var(--muted);margin-right:14px}
+.stat b{color:var(--text)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><span class="dot"></span><h1>Elmer <span>· ham radio connection guide</span></h1></div>
+  <p class="tag">In ham radio, an <b>Elmer</b> is the mentor who helps a newcomer get on the air. This is that
+    mentor as a dataset and tool: a source-audited catalog of radios, interfaces, and software — and the exact
+    settings to connect any of them.</p>
+  <div style="margin:14px 0 4px">
+    <span class="stat"><b>2,025</b> radios</span>
+    <span class="stat"><b>657</b> programs</span>
+    <span class="stat"><b>148</b> interfaces</span>
+    <span class="stat"><b>3,716</b> recipes</span>
+  </div>
+
+  <a class="cta" href="connection-guide.html">
+    <span class="ic">📻</span>
+    <span class="t"><b>Open the connection settings finder</b>
+      <small>Search a radio → pick your sound-card interface → pick a program → every setting, with sources.</small></span>
+    <span class="go">Launch →</span>
+  </a>
+
+  <h2>Data downloads</h2>
+  <div class="grid">
+    <a class="dl" href="radio_connection_profiles.csv"><span><span class="n">Radio connection profiles</span><span class="d">Best setup + CAT/audio/PTT per radio, sourced</span></span><span class="sz">1.4M</span></a>
+    <a class="dl" href="software_connection_profiles.csv"><span><span class="n">Software connection profiles</span><span class="d">How each program sets rig/audio/PTT/ALC</span></span><span class="sz">474K</span></a>
+    <a class="dl" href="connection_recipes.csv"><span><span class="n">Connection recipes</span><span class="d">Turnkey radio × software settings</span></span><span class="sz">4.6M</span></a>
+    <a class="dl" href="ham_radios.csv"><span><span class="n">Radios</span><span class="d">Every ham radio</span></span><span class="sz">240K</span></a>
+    <a class="dl" href="ham_software.csv"><span><span class="n">Software</span><span class="d">Every program that talks to a radio</span></span><span class="sz">206K</span></a>
+    <a class="dl" href="sound_card_interfaces.csv"><span><span class="n">Sound-card interfaces</span><span class="d">SignaLink, Digirig, DRA…</span></span><span class="sz">21K</span></a>
+    <a class="dl" href="cat_control_interfaces.csv"><span><span class="n">CAT interfaces</span><span class="d">CT-62, CI-V, RIGtalk…</span></span><span class="sz">22K</span></a>
+    <a class="dl" href="AUDIT_DISCREPANCIES.csv"><span><span class="n">Audit discrepancies</span><span class="d">Every value the source audit corrected</span></span><span class="sz">267K</span></a>
+    <a class="dl" href="CONNECTION_RULES.md"><span><span class="n">Connection rules</span><span class="d">ALC, PTT, COM-port, interface setup</span></span><span class="sz">6.7K</span></a>
+    <a class="dl" href="ham_radio_master.xlsx"><span><span class="n">Master workbook</span><span class="d">All sheets in one .xlsx</span></span><span class="sz">1.3M</span></a>
+  </div>
+
+  <div class="foot">
+    Values are cross-referenced to manuals / Hamlib / RigPix / interface docs where a source is shown; always
+    confirm against your radio's manual before wiring up. COM-port numbers are assigned by your PC and can't be
+    pre-filled. &nbsp;·&nbsp; Source: <a href="https://github.com/Atvriders/elmer">github.com/Atvriders/elmer</a>
+  </div>
+</div>
+</body>
+</html>
