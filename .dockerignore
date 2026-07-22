@@ -4,7 +4,6 @@
 .dockerignore
 Dockerfile
 docker-compose.yml
-nginx.conf
 README.md
 connection-guide.artifact.html
 **/.DS_Store
