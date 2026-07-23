@@ -186,6 +186,36 @@ document.getElementById('rulesbody').innerHTML = RULES.split("\n").map(l=>"<div>
 const state = {radio:null, iface:null, sw:null};
 const $ = s=>document.querySelector(s);
 function esc(s){return (s||"").replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+// search: normalize to alnum tokens, then require every token to appear in the label —
+// either as-is (keeps "ic-7300") or in a separator-stripped haystack (so "ic7300" & "icom 7300" both hit "Icom IC-7300").
+function normq(s){return (s||"").toLowerCase().replace(/\+/g," plus ").replace(/[^a-z0-9]+/g," ").trim();}
+function splitAD(t){return t.replace(/([a-z])([0-9])/g,"$1 $2").replace(/([0-9])([a-z])/g,"$1 $2").split(" ").filter(Boolean);}
+// each query token must hit the haystack as-is (keeps units like "d7","sr8","ic7300"); if not,
+// fall back to splitting it at letter/digit boundaries (so fully-concatenated "icom7300","ft817nd" still match).
+function smatch(hay,qn){
+  if(!qn)return true;
+  var h=hay, hc=h.replace(/[^a-z0-9]+/g,"");
+  return qn.split(" ").every(function(t){
+    if(!t)return true;
+    if(h.indexOf(t)>=0||hc.indexOf(t)>=0)return true;
+    var p=splitAD(t);
+    return p.length>1 && p.every(function(x){return h.indexOf(x)>=0||hc.indexOf(x)>=0;});
+  });
+}
+// searchable haystack: label + sub, plus a variant with Roman numerals→Arabic and "+"→"plus"
+// so "orion 2" finds "Orion II" and "omni vii plus" finds "Omni-VII+".
+function arabize(s){
+  var t=" "+s.toLowerCase().replace(/\+/g," plus ").replace(/[^a-z0-9]+/g," ")+" ";
+  var m=[[" iii "," 3 "],[" viii "," 8 "],[" vii "," 7 "],[" vi "," 6 "],[" iv "," 4 "],[" ix "," 9 "],[" xii "," 12 "],[" xi "," 11 "],[" ii "," 2 "]];
+  for(var i=0;i<m.length;i++){while(t.indexOf(m[i][0])>=0)t=t.replace(m[i][0],m[i][1]);}
+  return t;
+}
+function mkhay(label,sub){var b=(label+" "+(sub||"")).toLowerCase();return b+" "+arabize(b);}
+function cpt(s){return (s||"").replace(/[^a-z0-9]+/g,"");}
+// relevance: a token hitting the model number beats the brand beats the description beats a split-only hit.
+function scoreItem(it,toks,qC){var s=0;for(var i=0;i<toks.length;i++){var t=toks[i];if(!t)continue;
+  if(it.__mc.indexOf(t)>=0)s+=100;else if(it.__lc.indexOf(t)>=0)s+=60;else if(it.__sc.indexOf(t)>=0)s+=10;else s+=4;}
+  if(qC&&it.__mc.indexOf(qC)>=0)s+=400;return s;}
 function hasCodec(r){return (r.codec||"").trim().toLowerCase().startsWith("yes");}
 function hasCat(r){const p=(r.prot||"").toLowerCase();return p && !p.startsWith("none") && p!=="n/a" && p!=="";}
 function verpill(v){v=(v||"").toLowerCase();
@@ -200,8 +230,15 @@ function verpill(v){v=(v||"").toLowerCase();
 function combo(input, menu, items, label, onpick){
   let hi=-1, cur=[];
   function render(q){
-    q=q.trim().toLowerCase();
-    cur = !q ? items.slice(0,40) : items.filter(it=>label(it).toLowerCase().includes(q)).slice(0,60);
+    q=normq(q);
+    if(!q){ cur=items.slice(0,40); }
+    else{
+      var toks=q.split(" ").filter(Boolean), qC=toks.join("");
+      cur=items.filter(function(it){return smatch(it.__search,q);})
+               .map(function(it){return [scoreItem(it,toks,qC),it];})
+               .sort(function(a,b){return b[0]-a[0] || label(a[1]).length-label(b[1]).length;})
+               .slice(0,80).map(function(x){return x[1];});
+    }
     if(!cur.length){menu.innerHTML='<div class="opt" style="color:var(--muted)">No match</div>';menu.classList.add('open');return;}
     menu.innerHTML = cur.map((it,i)=>{
       const l=label(it); const q2=input.value.trim();
@@ -358,8 +395,10 @@ function copyOut(){
 }
 
 /* ---- wire up ---- */
-RADIOS.forEach(r=>{r.__label=r.mfr+" "+r.model;r.__sub=r.type+(r.bands?" · "+r.bands:"");});
-SOFTWARE.forEach(s=>{s.__label=s.name;s.__sub=s.cat;});
+RADIOS.forEach(r=>{r.__label=r.mfr+" "+r.model;r.__sub=r.type+(r.bands?" · "+r.bands:"");r.__search=mkhay(r.__label,r.__sub);
+  r.__mc=cpt(arabize(r.model));r.__lc=cpt(arabize(r.__label));r.__sc=cpt(r.__search);});
+SOFTWARE.forEach(s=>{s.__label=s.name;s.__sub=s.cat;s.__search=mkhay(s.__label,s.__sub);
+  s.__mc=cpt(arabize(s.name));s.__lc=cpt(arabize(s.__label));s.__sc=cpt(s.__search);});
 combo($('#rq'),$('#rmenu'),RADIOS,r=>r.__label,pickRadio);
 combo($('#sq'),$('#smenu'),SOFTWARE,s=>s.__label,pickSw);
 
