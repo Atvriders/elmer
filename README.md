@@ -36,11 +36,11 @@ image and publishes it to GHCR on every push to `master`.
 
 ```bash
 docker compose pull && docker compose up -d
-# → http://localhost:3025
+# → http://localhost:3023
 ```
 
 The bundled `docker-compose.yml` uses the prebuilt image `ghcr.io/atvriders/elmer:latest` and maps
-host port **3025** → container 80. To build locally instead: `docker build -t elmer . && docker run -p 3025:80 elmer`.
+host port **3023** → container 80. To build locally instead: `docker build -t elmer . && docker run -p 3023:80 elmer`.
 
 ## How the data was built
 
