@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not found · Elmer</title>
+<meta name="description" content="That page is off-frequency — it doesn't exist. Head back to Elmer.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0E1116" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F4F6F9" media="(prefers-color-scheme: light)">
+<link rel="icon" href="/favicon.svg">
+<style>
+  :root{
+    /* Elmer — dark is the home base */
+    --ground:#0E1116;
+    --surface:#161B22;
+    --surface2:#1E2530;
+    --border:#2A333F;
+    --text:#E6EDF3;
+    --muted:#8592A3;
+    --accent:#34D3BE;
+    --accent-ink:#0B3F39;
+    --grid:rgba(133,146,163,.06);
+    --readout-dim:rgba(133,146,163,.28);
+    --shadow:0 24px 60px -32px rgba(0,0,0,.8), 0 2px 0 rgba(255,255,255,.02) inset;
+    --font-sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  @media (prefers-color-scheme: light){
+    :root{
+      --ground:#F4F6F9;
+      --surface:#FFFFFF;
+      --surface2:#EDF1F5;
+      --border:#D6DDE5;
+      --text:#141A21;
+      --muted:#5B6775;
+      --accent:#0FA091;
+      --accent-ink:#FFFFFF;
+      --grid:rgba(20,26,33,.05);
+      --readout-dim:rgba(91,103,117,.32);
+      --shadow:0 24px 50px -34px rgba(20,26,33,.35), 0 0 0 1px rgba(20,26,33,.02) inset;
+    }
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:var(--font-sans);
+    color:var(--text);
+    background:var(--ground);
+    /* faint instrument-bench grid */
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:36px 36px, 36px 36px;
+    background-position:center;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:clamp(16px,4vw,48px);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .micro{
+    font-family:var(--font-sans);
+    text-transform:uppercase;
+    letter-spacing:.16em;
+    font-size:11px;
+    font-weight:600;
+    color:var(--muted);
+    line-height:1;
+  }
+  .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+
+  .panel{
+    width:min(600px,100%);
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+
+  /* ---- bezel / header strip ---- */
+  .panel__head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    padding:16px 22px;
+    background:var(--surface2);
+    border-bottom:1px solid var(--border);
+  }
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand__mark{color:var(--accent);display:block}
+  .brand__name{
+    font-size:15px;
+    font-weight:650;
+    letter-spacing:.02em;
+    color:var(--text);
+  }
+  .status{display:flex;align-items:center;gap:9px}
+  .led{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--muted);
+    box-shadow:0 0 0 3px color-mix(in srgb, var(--muted) 18%, transparent);
+    flex:none;
+  }
+
+  /* ---- readout ---- */
+  .readout{padding:clamp(24px,5vw,40px) clamp(22px,5vw,40px) 8px}
+  .readout__label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
+  .code{
+    font-family:var(--font-mono);
+    font-variant-numeric:tabular-nums;
+    font-weight:600;
+    font-size:clamp(76px,20vw,132px);
+    line-height:.9;
+    letter-spacing:.02em;
+    color:var(--text);
+    margin:0;
+  }
+
+  /* ---- signal / S-meter ---- */
+  .signal{margin-top:22px;border-top:1px solid var(--border);padding-top:16px}
+  .signal__head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:10px}
+  .signal__val{color:var(--muted)}
+  .scope{
+    position:relative;
+    width:100%;
+    height:64px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    background:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+      var(--ground);
+    background-size:24px 16px, 24px 16px, 100% 100%;
+    background-position:center;
+    overflow:hidden;
+  }
+  .scope svg{display:block;width:100%;height:100%}
+  .flatline{stroke:var(--muted);stroke-width:1.5;fill:none;opacity:.65}
+  .cursor{fill:var(--accent)}
+  @media (prefers-reduced-motion: no-preference){
+    .cursor{animation:blink 1.6s steps(1,end) infinite}
+  }
+  @keyframes blink{0%,55%{opacity:1}56%,100%{opacity:.15}}
+
+  .scale{
+    display:flex;
+    justify-content:space-between;
+    margin-top:8px;
+    padding:0 2px;
+  }
+  .scale span{font-size:10px;letter-spacing:.12em;color:var(--muted);opacity:.7}
+
+  /* ---- message ---- */
+  .message{padding:22px clamp(22px,5vw,40px) 4px}
+  .message h1{
+    margin:0;
+    font-size:clamp(28px,6vw,38px);
+    font-weight:680;
+    letter-spacing:-0.01em;
+    color:var(--text);
+  }
+  .message p{margin:10px 0 0;color:var(--muted);font-size:16px;line-height:1.55;max-width:44ch}
+  .message .note{
+    margin-top:14px;
+    font-size:13px;
+    color:var(--muted);
+    opacity:.85;
+    line-height:1.5;
+  }
+
+  /* ---- footer / action ---- */
+  .panel__foot{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:16px;
+    padding:clamp(22px,5vw,32px) clamp(22px,5vw,40px);
+    margin-top:14px;
+    border-top:1px solid var(--border);
+    background:var(--surface2);
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:9px;
+    background:var(--accent);
+    color:var(--accent-ink);
+    text-decoration:none;
+    font-weight:650;
+    font-size:15px;
+    padding:12px 20px;
+    border-radius:10px;
+    border:1px solid transparent;
+    transition:transform .12s ease, filter .12s ease;
+  }
+  .btn svg{display:block}
+  .btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+  .btn:active{transform:translateY(0)}
+  .sign{color:var(--muted);opacity:.85;text-align:right}
+
+  :where(a,.btn):focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:3px;
+    border-radius:10px;
+  }
+
+  @media (max-width:460px){
+    .panel__foot{flex-direction:column;align-items:stretch}
+    .btn{justify-content:center}
+    .sign{text-align:center}
+  }
+</style>
+</head>
+<body>
+  <main class="panel" role="main">
+    <header class="panel__head">
+      <div class="brand">
+        <svg class="brand__mark" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="18" r="2" fill="currentColor"/>
+          <path d="M8.8 14.2a4.5 4.5 0 0 1 6.4 0M6.3 11.7a8 8 0 0 1 11.4 0M3.8 9.2a11.5 11.5 0 0 1 16.4 0"
+                stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <span class="brand__name">Elmer</span>
+      </div>
+      <div class="status">
+        <span class="led" aria-hidden="true"></span>
+        <span class="micro">No copy</span>
+      </div>
+    </header>
+
+    <section class="readout">
+      <div class="readout__label">
+        <span class="micro">Error</span>
+        <span class="micro">Not found</span>
+      </div>
+      <p class="code" aria-label="Error 404">404</p>
+
+      <div class="signal" aria-hidden="true">
+        <div class="signal__head">
+          <span class="micro">RX signal</span>
+          <span class="micro signal__val mono">S0 · 0.0&nbsp;µV</span>
+        </div>
+        <div class="scope">
+          <svg viewBox="0 0 560 64" preserveAspectRatio="none" role="presentation">
+            <path class="flatline" d="M0 32 L544 32"/>
+            <rect class="cursor" x="544" y="26" width="7" height="12" rx="1"/>
+          </svg>
+        </div>
+        <div class="scale">
+          <span>S1</span><span>S3</span><span>S5</span><span>S7</span><span>S9</span><span>+20</span><span>+40</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="message">
+      <h1>No copy.</h1>
+      <p>That page is off-frequency — it doesn't exist.</p>
+      <p class="note">We swept the band around this address and heard nothing back. It may have been retired, or the call was never on the air.</p>
+    </section>
+
+    <footer class="panel__foot">
+      <a class="btn" href="/">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M13 5l-7 7 7 7M6 12h13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to Elmer
+      </a>
+      <span class="micro sign">73 — retune from the top of the band</span>
+    </footer>
+  </main>
+</body>
+</html>

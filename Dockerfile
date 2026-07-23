@@ -17,6 +17,11 @@ COPY index.html connection-guide.html \
      CONNECTION_RULES.md ham_radio_master.xlsx \
      /usr/share/nginx/html/
 
+# Brand + PWA assets (favicon, social card, manifest, 404, robots)
+COPY favicon.svg favicon.ico apple-touch-icon.png icon-192.png icon-512.png \
+     og.png site.webmanifest robots.txt 404.html \
+     /usr/share/nginx/html/
+
 EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
     CMD wget -qO- http://localhost/healthz || exit 1
